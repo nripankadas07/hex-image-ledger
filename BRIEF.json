@@ -1,0 +1,29 @@
+{
+  "repo": "hex-image-ledger",
+  "module": "hex_image_ledger",
+  "units": 16,
+  "capability": "Explain Intel HEX sparse address coverage, gaps, entry context and every overlapping write without flashing.",
+  "user": "Firmware maintainers reviewing a HEX handoff before device programming.",
+  "pain": "A checksum-valid image can still contain contradictory writes or sparse holes; choosing a last writer hides evidence.",
+  "comparables": [
+    "python-intelhex/intelhex",
+    "eerimoq/bincopy",
+    "arkku/ihex"
+  ],
+  "leader": "python-intelhex/intelhex",
+  "query": "intel hex",
+  "quick": "hex-image-ledger example.hex",
+  "expected": "Exit 0: six unique bytes occupy two ranges at 0x08000000..04 and 0x08000008..0A; the interior gap is four bytes. No hole is filled.",
+  "contract": "ASCII Intel HEX records00/01/02/03/04/05 with actual byte count and checksum validation. Segment and linear base changes affect subsequent records. Ranges use exclusive ends. All overlaps, including identical repeats, are findings; conflicting values have no selected winner. The unambiguous sparse-map SHA256 is domain-separated and hashes sorted four-byte big-endian address plus byte, excluding conflicting cells. Entry records are unique; raw numerical coverage is checked without CPU/A20/Thumb interpretation. EOF is mandatory and final.",
+  "limits": "1 MiB,8192 records,262144 data-byte events,32-bit address space. No record may wrap its16-bit offset. Overlap evidence is capped at256 addresses with an omitted count. Gaps are informational. No conversion, winner policy, filling, binary output, flashing or hardware verification.",
+  "acceptance": "Reproduce mode changes, sparse gaps, checksum errors, identical/conflicting overlaps, address-sensitive hashes, uncovered entries and overflow rejection.",
+  "notes": "IntelHex and bincopy already parse, merge and convert firmware images; arkku/ihex is a compact C reader/writer. Related overlap and fill discussions are adjacent context, not proof of a current defect. Our report deliberately avoids merge precedence and fill policy.",
+  "overlap": "This is Intel HEX record addressing and contradictory-write evidence, distinct from the owned generic hexadecimal/text tooling. It is not a renamed formatter or a flasher wrapper.",
+  "topics": [
+    "intel-hex",
+    "firmware",
+    "python",
+    "embedded",
+    "data-validation"
+  ]
+}
